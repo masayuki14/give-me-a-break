@@ -33,6 +33,9 @@
         font-size: 72px;
         line-height: 1;
       }
+      .jumbotron .btns {
+        margin: 70px 0 0 0;
+      }
       .jumbotron .btn {
         font-size: 21px;
         padding: 14px 24px;
@@ -44,6 +47,11 @@
       }
       .marketing p + h4 {
         margin-top: 28px;
+      }
+
+      .rest-contents {
+        margin: 30px 0 0 0;
+        text-align: center;
       }
     </style>
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -69,8 +77,10 @@
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="#">Home</a></li>
+          <!--
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
+          -->
         </ul>
         <h3 class="muted">Give me a BREAK!!</h3>
       </div>
@@ -83,38 +93,48 @@
         </div>
       </div>
 
+      <div class="rest-contents" id="rest-contents"></div>
+
       <div class="jumbotron">
 
         <h1>No Break, No Work</h1>
         <h2>If you work hard for 25 minutes, <br />you can have 5 minutes break!</h2>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <a class="btn btn-large btn-success" href="javascript: work()">Work</a>
-        <a class="btn btn-large btn-success" href="javascript: rest()">Rest</a>
+        <p class="lead"></p>
+        <div class="btns">
+          <a class="btn btn-large btn-success" href="javascript: _work()">Work</a>
+          <a class="btn btn-large btn-success" href="javascript: _rest()">Rest</a>
+        </div>
       </div>
 
       <hr>
 
       <div class="row-fluid marketing">
         <div class="span6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+          <h4>About</h4>
+          <p>This service supports all of desk workers.<br /> For efficient works, have to take break regularly. So you use this site for doing your best.</p>
 
+          <!--
           <h4>Subheading</h4>
           <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
 
           <h4>Subheading</h4>
           <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+          -->
         </div>
 
         <div class="span6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+          <h4>Contact</h4>
+          <p>This service's source code are opened by github.<br />Please feel free to voice your opinions.<br />
+          <a href="https://github.com/masayuki14/give-me-a-break" target="_blank">https://github.com/masayuki14/give-me-a-break</a>
+          </p>
 
+          <!--
           <h4>Subheading</h4>
           <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
 
           <h4>Subheading</h4>
           <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+          -->
         </div>
       </div>
 
@@ -140,25 +160,45 @@
         color: #000;
       }
     </style>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            work();
-        });
 
-        function setTimer(time) {
+    <script type="text/javascript">
+        // タイマー設定関数
+        // arg1: タイマーの設定時間 mm:ss 形式
+        // arg2: タイマー終了時のcallback 関数
+        function setTimer() {
+            var time = (arguments.length > 0) ? arguments[0] : '25:00';
+            var func = (arguments.length > 1) ? arguments[1] : function(){};
             $('#counter').html('');
             $('#counter').countdown({
                 image: 'img/digits.png',
                 startTime: time,
-                format: 'mm:ss'
+                timerEnd: func,
+                format: 'mm:ss',
             });
         }
 
-        function work() {
-            setTimer('25:00');
+        // Worktime と Resttime のカウントダウンを繰り返す
+        var _work = function() {
+            hideContent();
+            setTimer('25:00', _rest);
         }
-        function rest() {
-            setTimer('05:00');
+        var _rest = function() {
+            showContent();
+            setTimer('05:00', _work);
+        }
+
+        $(document).ready(function(){
+            _work();
+        });
+
+        function showContent() {
+            html = '<h1>Have a break! </h1>'
+                 + '<iframe width="560" height="315" src="http://www.youtube.com/embed/iPP-SDiLm3Q?list=PL91A8AD3495E2290D" frameborder="0" allowfullscreen></iframe>';
+            $('#rest-contents').html(html);
+        }
+
+        function hideContent() {
+            $('#rest-contents').html('');
         }
     </script>
 
