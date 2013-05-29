@@ -28,11 +28,16 @@ $(document).ready(function(){
 });
 
 function showContent() {
+  /* http通信でYouTube動画のIDを取得する */
+  $.get('movie.php', function(youtubeId) {
+    // 動画の表示
     html = '<h1>Have a break! </h1>'
-         + '<iframe width="640" height="360" src="http://www.youtube.com/embed/iPP-SDiLm3Q?list=PL91A8AD3495E2290D&autoplay=1" frameborder="0" allowfullscreen></iframe>';
+         + '<iframe width="640" height="360" src="http://www.youtube.com/embed/' + youtubeId + '?&autoplay=1" frameborder="0" allowfullscreen></iframe>';
     $('#rest-contents').html(html);
+  });
 }
 
 function hideContent() {
     $('#rest-contents').html('');
 }
+
